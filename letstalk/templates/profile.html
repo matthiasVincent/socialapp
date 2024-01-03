@@ -1,0 +1,131 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/style.css' %}"> 
+ {% endblock %}
+{% block title %} <title>{{userprofile.first_name}} {{userprofile.last_name}} Profile Page</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">{{userprofile.first_name}} {{userprofile.last_name}}</p> {% endblock %}
+
+{% block collapse %}
+<div class="container-fluid bg-dark d-flex justify-content-between align-items-center p-3">
+    <p class="h5 text-white">{{userprofile.first_name}} {{userprofile.last_name}}</p>
+    <a href="{% url 'home' %}" class="h5 text-decoration-none text-white">back-></a>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid p-0">
+        <div class="photo-cont d-flex align-items-center mb-2">
+            <div class="cover-photo">
+                <img src="{{userprofile.cover_img.url}}" alt="" class="w-100">
+                <div class="follow">
+                    <span> {% if user_posts %} {{user_posts}} post{{user_posts|pluralize}} {% else %} {{user_posts}} post {% endif %}</span>
+                    <span>{{my_follower}} followers</span> 
+                    <span>{{following}} following</span> 
+                    <span>
+                        {% if userprofile.user != logged_in %}
+                        <form action="{% url 'editprofile' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" class="form-control" value="{{user.username}}" name="follower">
+                            <input type="hidden" class="form-control" value="{{userprofile.user.username}}" name="following">
+                            <input type="submit" class="btn btn-info" value="{{btn_text}}" name="follow">
+                        </form>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+                <div class="prp">
+                    {% if userprofile.user == logged_in %}
+                    <a href="#"role="button" data-toggle="modal" data-target="#m">
+                    <img src="{{userprofile.profile_img.url}}" alt="" class="w-100 h-100">
+                    </a>
+                    <div class="modal fade" id="m">
+                        <div class="modal-dialog fixed-bottom">
+                            <div class="modal-content">
+                                <div class="modal-header table-dark">
+                                    <h5 class="modal-title">Hey guys</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body table-dark">
+                                    <ul class="container">
+                                        <li class="dropdown-item">
+                                            <a href="#">
+                                                Change profile pricture 
+                                            </a>
+                                        </li>
+                                        <div class="dropdown-divider"></div>
+                                        <li class="dropdown-item">
+                                            <a href="#">
+                                                View profile pricture
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer table-dark">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="#"role="button" data-toggle="moda" data-target="#">
+                        <img src="{{userprofile.profile_img.url}}" alt="" class="w-100 h-100">
+                        </a>
+                    {% endif %}
+                </div>
+        </div>
+        <div class="profile-contents mt-4 p-4">
+            <div class="basic d-flex flex-column align-items-center">
+                <p class="h4">{{userprofile.first_name}} {{userprofile.last_name}}</p>
+                <p class="h5">{{userprofile.favorite_quote}}</p>
+                {% if userprofile.user == logged_in %}
+                <button class="btn btn-primary mb-2 py-1 w-75">Add to Stories</button>
+                <a href="{% url 'setting' %}" class="btn btn-success mb-2 py-1 w-75">Edit Profile</a>
+                {% endif %}
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4 mb-3 d-flex justify-content-center">
+                    <div class="frd-cont p-3 w-100" style="border: solid 2px black; border-radius: 20px; height: 300px;">
+                        <div class="frd-hd d-flex justify-content-between p-3">
+                            <div class="d-flex flex-column">
+                                <span class="h6">Friends,</span>
+                                <span class="h6">{{friends|length}}+</span>
+                            </div>
+                            <a href="#" class="text-decoration-none">See all</a>
+                        </div>
+                        <div class="cont-frd d-flex flex-wrap">
+                            {% for friend in friends %}
+                            <div class="cls bg-dark text-white">
+                                <p>{{friend.fullname}}</p>
+                            </div>
+                            {% endfor %}
+                            <!-- <div class="cls bg-danger">
+                                <p>hello</p>
+                            </div>
+                            <div class="cls bg-warning">
+                                <p>sup</p>
+                            </div>
+                            <div class="cls bg-light">
+                                <p>hi</p>
+                            </div>
+                            <div class="cls bg-light">
+                                <p>hi</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-md-8 mb-3">
+                    {% include 'comment.html' %}
+                    {% include 'post_profile.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %} 
+
+{% endblock %}

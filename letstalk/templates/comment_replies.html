@@ -1,0 +1,116 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/post_detail.css' %}"> 
+ {% endblock %}
+{% block title %} <title>inbox-{{userprofile.fullname}}</title> {% endblock %}
+
+{% block collapse %}
+<nav class="hdr">
+    <ul>
+        <li>
+            <a href="/post_comment/{{comment.post_id.post_id}}/">back</a>
+        </li>
+        <li>
+            <a href="{% url 'home' %}">replies</a>
+        </li>
+        <li>
+            <a href="{% url 'home' %}">search</a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block main %}
+<div class="wrapper cmt-cont" style="padding-bottom: 80px;">
+    <!-- <div class="condition" style="border-bottom: 1px solid gray; background-color: brown;"> -->
+    {% if has_reply %}
+    <div class="wrap-reply">
+        <div class="img-cont-reply">
+            <img src="{{comment.commenter.profile_img.url}}" alt="" class="image">
+        </div>
+        <div class="txt-wrap-reply">
+            <div class="name-cont-reply">
+                <b><p>{{comment.commenter.fullname}}</p></b>
+                <p>{{comment.comments}}</p>
+            </div>
+            <div class="some-reply">
+                <span>13 mins</span>
+                <a href="#">like</a>
+                <a href="/replies/{{cmt.id}}/">reply</a>
+            </div>
+        </div> 
+    </div>
+        <div class="short-wrapper">
+            {% for rep in comment.replies %}
+            <div class="short">
+                <!-- <hr style="border: 1px solid gray; width: 20%; height: 0;" class="hor-line"> -->
+                <div class="hor-line"></div>
+                {% if forloop.counter == comment.rep_count %}
+                <div class="line line_{{rep.id}}" style="display: none;"></div>
+                {% else %}
+                <div class="line"></div>
+                {% endif %}
+                <div class="img-top">
+                    <img src="{{rep.commenter.profile_img.url}}" alt="" class="image">
+                </div>
+                <div class="reply-txt">
+                    <p>{{rep.comments}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+   {% else %}
+    <div class="wrapper-cmt" style="padding-bottom: 70px;">
+        <div class="img-cont">
+            <img src="{{comment.commenter.profile_img.url}}" alt="" class="image">
+        </div>
+        <div class="txt-wrap">
+            <div class="name-cont">
+                <b><p>{{comment.commenter.fullname}}</p></b>
+                <p>{{comment.comments}}</p>
+            </div>
+            <div class="some">
+                <span>13 mins</span>
+                <a href="#">like</a>
+                <a href="">reply</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- </div> -->
+    <div class="comment p-2 bg-light">
+        <form action="/replies/{{comment.id}}/" method="post">
+            <div class="grp w-100 p-2">
+             {% csrf_token %}
+                <textarea name="reply"  rows="1" class="w-100 mr-2 p-2 bg-transparent" placeholder="Write a reply" 
+                style="resize: none; overflow: hidden;"></textarea>
+                <!-- <input type="hidden" name="comment_id" value="{{comment.id}}"> -->
+                <input type="hidden", name="userprofile", value="{{request.user.username}}">
+                <button type="submit" class="btn btn-success p-2 mb-2">send</button>
+            </div>
+        </form>
+    </div>
+   </div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block script %}
+{{block.super}}
+<script>
+    $(document).ready(
+        function(){
+            console.log("Loaded")
+            bd = $("body")
+            rep_cont = $('.wrapper')
+            console.log(rep_cont.prop("scrollHeight"))
+            window.scrollTo(0, bd.prop("scrollHeight"))
+            rep_cont.scrollTop(rep_cont.prop("scrollHeight"))
+        }
+    )
+</script>
+{% endblock %}

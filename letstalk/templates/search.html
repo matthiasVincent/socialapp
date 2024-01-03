@@ -1,0 +1,49 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/search.css' %}"> 
+ {% endblock %}
+{% block title %} <title>Search-results</title> {% endblock %}
+
+{% block collapse %}
+    <nav class="navbar bg-primary">
+        {% block brand %} <p class="h5 text-white">Search Results</p> {% endblock %}
+    <ul class="navbar-nav list-style-none">
+        <li class="nav-item">
+            <a href="{% url 'home' %}"  class="btn btn-primary nav-link h6 text-white">Go back</a>
+        </li>
+    </ul>
+    </nav>
+
+{% endblock %}
+
+{% block main %}
+<div class="container rounded p-3 bg-light search-cont">
+    <div class="friend-cont mb-1">
+        {% for userprofile in search_result %}
+        <a href="{% url 'profile' userprofile.user.username %}" class="text-decoration-none">
+            <div class="single-friend  p-3 d-flex justify-content-between">
+                <div class="pic-cont">
+                    <img src="{{userprofile.profile_img.url}}" alt="" id="pb">
+                </div>
+                <div class="friend-det">
+                    <p class="h5 text-dark">{{userprofile.first_name|truncatechars:10}}</p>
+                    <p class="last-msg h6 text-dark">{{userprofile.favorite_quote|truncatechars:10}}</p>
+                </div>
+            </div>
+            </a>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="container d-flex justify-content-center mt-4 p-4 fixed-bottom">
+    <p class="text-white">&copy; Matthias&comma;&nbsp;2023</p>
+</div>
+{% endblock %}
+
+{% block script %} 
+
+{% endblock %}

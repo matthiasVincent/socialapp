@@ -1,0 +1,67 @@
+<div class="pst-cont bg-primary">
+    {% for post in my_posts reversed %}
+   <div class="container p-0 mb-3" style="border-radius: 25px;">
+       <div class="hd d-flex justify-content-between mb-2  p-2" >
+           <a href="{% url 'profile' post.poster %}" class="text-decoration-none text-dark">
+           <div class="lf">
+               <div class="img-cont">
+                   <img src="{{post.poster_image.profile_img.url}}" alt="hi" style="width: 100%; height: 100%; border-radius: 50%;">
+               </div>
+               <div class="some-text">
+                   <span>{{post.full_name|truncatechars:11}}</span>
+                   <span>{% if post.followers > 0 %}{{post.followers}} follower{{post.followers|pluralize}} {% endif %}</span>
+               </div>
+           </div>
+           </a>
+           <p><a href="#" class="text-decoration-none" style="font-size: 20px; font-weight: 600; margin-right: 20px;">...</a></p>
+       </div>
+       <div class="post-words p-3 text-justify">
+           <p class="post-words{{forloop.counter}}">
+               {% if post.words|length > 40 %}
+                   {{post.words|truncatechars:40}}
+                   <span class="text-dark showfull" 
+                   onclick="document.querySelector('.post-words{{forloop.counter}}').innerHTML=`{{post.words}}`" style="cursor: pointer;">
+                   See more</span>
+               {% else %}
+                   {{post.words|truncatechars:40}}
+               {% endif %}
+           </p>
+       </div>
+       {% if post.post_image %}
+       <div class="pic-cont p-0 d-flex justify-content-center">
+           <img src="{{post.post_image.url}}" alt="Picture here" style="width: 100%; height: 70%;">
+       </div>
+       {% endif %}
+       <div class="rxn p-3">
+           <div class="d-flex flex-column">
+               <div class="lk-feed d-flex">
+               {% if post.no_of_likes and post in all_likers %}
+               <p class="like_count{{post.post_id}}" style="color: green;">You<span>{% if post.no_of_likes|add:'-1' > 0 %} and 
+                   {{post.no_of_likes|add:'-1'}} other{{post.no_of_likes|add:'-1'|pluralize}}{% endif %}</p>
+               {% else %}
+               <span class="like_count{{post.post_id}}" style="color:green">{% if post.no_of_likes > 0 %}{{post.no_of_likes}} 
+                   like{{post.no_of_likes|pluralize}} {% endif %}</span>
+               {% endif %}
+               </div>
+               <div class="cmt-like d-flex justify-content-between">
+                   <div class="wrp-like" style="position: relative;">
+                       {% if post.no_of_likes and post in all_likers %}
+                       <a href="#"
+                       class="text-decoration-none likebutton i-like{{post.post_id}}"
+                       id="{{post.post_id}}" style="color: blue;">Like</a>
+                       {% else %}
+                       <a href="#"
+                        class="text-decoration-none likebutton i-like{{post.post_id}}"
+                        id="{{post.post_id}}" style="color: black;">Like</a>
+                        {% endif %}
+                       </div>
+
+                <a href="/post_comment/{{post.post_id}}/"
+                class="text-decoration-none" style="color: black;">Comment</a>
+               </div>
+           </div>
+       </div>
+   </div>
+   <hr>
+   {% endfor %}
+</div> 

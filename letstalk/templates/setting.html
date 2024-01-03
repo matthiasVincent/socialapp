@@ -1,0 +1,141 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/style.css' %}"> 
+ {% endblock %}
+{% block title %} <title>Login</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">Settings Page</p> {% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a href="/"  class="nav-link h6 text-white">Home</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="container p-3  d-flex flex-column">
+        <div class="set-nav">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <p class="">Account setting for <span class="text-primary">{{userprofile.fullname}}</span></p>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}">
+                        Home 
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="user-basics">
+            <div class="sect-cont table-light p-3">
+                <p class="hd">Profile Pics</p>
+                <div class="img-con">
+                    <div class="cont-img mb-3">
+                        <img src="{{userprofile.profile_img.url}}" alt="Profile Pics" class="w-100 h-100">
+                    </div>
+                    <form action="{% url 'editprofile' %}" method="post" class="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="prp" class="btn btn-outline-success py-1 m-0 mb-2">Choose File</label>
+                        <input type="file" class="form-control mb-2 d-none" name="profile_img" id="prp">
+                        <button type="submit" class="btn btn-primary py-1 m-0 mb-2" name="profile_img_edit" value="profile">Save photo</button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <div class="sect-cont table-light p-3">
+                <p class="hd">Cover Pics</p>
+                <div class="img-con d-flex flex-column">
+                    <div class="cont-img mb-3">
+                        <img src="{{userprofile.cover_img.url}}" alt="Profile Pics" class="w-100 h-100">
+                    </div>
+                    <form action="{% url 'editprofile' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="cp" class="btn btn-outline-success py-1 m-0 mb-2">Choose File</label>
+                        <input type="file" class="form-control mb-2 d-none" id="cp" name="cover_img">
+                        <button type="submit" class="btn btn-primary py-1 m-0 mb-2" value="cover" name="cover_img_edit">Save Photo</button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <div class="sect-cont table-light p-3">
+                <p class="hd">Edit Personal Details</p>
+                <div class="about-con d-flex flex-column p-3">
+                    <div class="sec">
+                        <p class="hd">Edit Name</p>
+                        <form action="{% url 'editprofile' %}" method="post">
+                            {% csrf_token %}
+                            <div class="btn-grp">
+                                <label for="fn" class="form-control-label">First Name</label>
+                                <input type="text" class=" form-control cust" value="{{userprofile.first_name}}" id="fn" name="first_name">
+                            </div>
+                            <div class="btn-grp">
+                                <label for="ln" class="form-control-label">Last Name</label>
+                                <input type="text" class="form-control cust" value="{{userprofile.last_name}}" id="ln" name="last_name">
+                            </div>
+                            <div class="sub-cont">
+                                <input type="submit" class="btn btn-primary p-1" value="Save" name="name_edit">
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="sec">
+                        <p class="h5">Edit Short Quote</p>
+                        <form action="{% url 'editprofile' %}" method="post">
+                            {% csrf_token %}
+                            <div class="btn-grp">
+                                <label for="fn" class="form-control-label">Bio</label>
+                                <textarea name="bio" id="" cols="20" rows="5" class="form-control cust">{{userprofile.favorite_quote}}</textarea>
+                            </div>
+                            <div class="sub-cont">
+                                <input type="submit" class="btn btn-primary p-1" value="Save" name="quote_edit">
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="sec">
+                        <p class="h5">Edit Date of Birth</p>
+                        <form action="{% url 'editprofile' %}" method="post">
+                            {% csrf_token %}
+                            <div class="btn-grp">
+                                <label for="dob" class="form-control-label">DOB</label>
+                                <input type="text" class="form-control cust" value="{{userprofile.dob}}" id="dob" name="dob">
+                            </div>
+                            <div class="sub-cont">
+                                <input type="submit" class="btn btn-primary p-1" value="Save" name="dob_edit">
+                            </div>
+                        </form> 
+                    </div>
+                    <hr>
+                    <div class="sec">
+                        <p class="h5">Edit Location</p>
+                        <form action="{% url 'editprofile' %}" method="post">
+                            {% csrf_token %}
+                            <div class="btn-grp">
+                                <label for="loc" class="form-control-label">Location</label>
+                                <input type="text" class="form-control cust" value="{{userprofile.location}}" id="loc" name="location">
+                            </div>
+                            <div class="sub-cont">
+                                <input type="submit" class="btn btn-primary p-1" value="Save" name="location_edit">
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %} 
+<script>
+    $(document).ready(
+        function()
+        {
+           
+        }
+    )
+
+</script>
+
+{% endblock %}

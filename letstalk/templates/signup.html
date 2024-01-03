@@ -1,0 +1,47 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/learn.css' %}"> 
+ {% endblock %}
+{% block title %} <title>Signup to chat app</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">Chat App</p> {% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a href="{% url 'signin' %}"  class="btn btn-primary nav-link h6 text-white">Login</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+<div class="container mr-auto p-3 bg-light" id ="ct">
+    <p class="h5 bg-success text-white p-2">Signup</p>
+    {% for msg in messages %}
+    <div class="alert alert-dismissible alert-success fade show my-3" id="at">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+         <p class="text-danger text-center at">{{msg}}</p>
+    </div>
+    {% endfor %}
+  <form action="" method="post" class="">
+        {% csrf_token %}
+        <div class="err">
+            {{form.non_field_errors}}
+        </div>
+        {{form.as_p}}
+        <input type="submit" class="form-control bg-primary text-white mb-2" value="Signup">
+        <p>Have an account? <a href="{% url 'signin' %}">Login</a></p>
+    </form>
+</div> 
+{% endblock %}
+
+{% block script %} 
+<script>
+    alert_dis = setInterval(
+        function()
+        {
+            document.querySelector('#at').style.display = "none";
+        }
+    , 10000)
+</script>
+{% comment %} <script src="{% static '/learn.js' %}"></script>  {% endcomment %}
+
+{% endblock %}

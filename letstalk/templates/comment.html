@@ -1,0 +1,16 @@
+{% load static %}
+{% if userprofile.user == user %}
+<a href="/post/" class="post-page w-sm-100 d-flex align-items-center p-2 text-decoration-none mb-3 mt-4" style="border: solid 1.5px darkblue; border-radius: 30px;">
+    <div class="lf">
+        <div class="img-cont">
+            <img src="{{userprofile.profile_img.url}}" alt="hi" style="width: 100%; height: 100%; border-radius: 50%;">
+        </div>
+    </div>
+    {% block input %}
+    <input type="text" class="form-control mx-2 p-2" style="border-radius: 20px;" placeholder="What is on your mind?">
+    {% endblock %}
+        <div class="some">
+            <span>name</span>
+        </div>
+</a>
+{% endif %}

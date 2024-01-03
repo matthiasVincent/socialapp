@@ -1,0 +1,46 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/learn.css' %}"> 
+ {% endblock %}
+{% block title %} <title>Create Post</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">Create Post</p> {% endblock %}
+{% block collapse %}
+<div class="container-fluid bg-dark d-flex justify-content-between align-items-center p-3">
+    <p class="h5 text-white">Create Post</p>
+    <a href="{% url 'home' %}" class="h5 text-decoration-none text-white">Cancel</a>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid mr-auto p-3 bg-light w-75" id ="ct">
+    <div class="d-flex justify-content-end">
+        <button  class="sub1 btn btn-transparent text-primary p-2 mb-2">Post</button>
+    </div>
+  <form action="{% url 'post' %}" method="post" class="d-flex flex-column form" enctype="multipart/form-data">
+    {% csrf_token %}
+        <textarea name="words" id="" cols="30" rows="10" class="form-control p-3 bg-transparent" placeholder="What is on your mind?"></textarea>
+        <div class="d-flex justify-content-between align-items-center  p-3">
+            <label for="post_image" class="btn btn-info p-2 mb-0">Chose file</label>
+            <input type="file" class="form-control  mr-2 d-none" name="post_image" style="width: 100px;" id="post_image">
+            <button type="submit" class="sub2 btn btn-primary p-2 mb-0">Post</button>
+        </div>
+    </form> 
+</div> 
+{% endblock %}
+
+{% block script %} 
+<script>
+   $(document).ready(
+        function() {
+            $('.sub1').on('click',function() {
+                console.log('was clicked')
+                $('.sub2').click()
+            })
+        }
+   )
+</script>
+<script src="{% static '/learn.js' %}"></script> 
+
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/post_detail.css' %}"> 
+ {% endblock %}
+{% block title %} <title>Post by ....</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">Create Post</p> {% endblock %}
+{% block collapse %}
+<nav class="sticky-top m-0" style="border-bottom: 1px solid grey; background-color: aliceblue;">
+<ul class="d-flex align-items-center justify-content-between p-2 m-0" style="list-style: none;">
+    <li>
+        <a href="{% url 'home' %}"  class="h6 text-dark">Go back</a>
+    </li>
+    <li>
+        {{single_post.full_name}} post
+    </li>
+    <li>
+        <a href="{% url 'home' %}"  class="h6 text-dark">Search</a>
+    </li>
+
+</ul>
+</nav>
+{% endblock %}
+
+{% block main %}
+<div class="wrapper p-0">
+   <div class="container p-0 mb-3" style="border-radius: 25px;">
+       <div class="hd d-flex justify-content-between mb-2 p-2" >
+           <a href="{% url 'profile' single_post.poster %}" class="text-decoration-none text-dark">
+           <div class="lf" style="padding-left: 25px;">
+               <div class="img-cont" style="margin-left: 25px;">
+                   <img src="{{single_post.poster_image.profile_img.url}}" alt="hi" style="width: 100%; height: 100%; border-radius: 50%;">
+               </div>
+               <div class="some-text ml-3">
+                   <span>{{single_post.full_name|truncatechars:11}}</span>
+                   <span>{% if single_post.followers > 0 %}{{single_post.followers}} follower{{single_post.followers|pluralize}} {% endif %}</span>
+               </div>
+           </div>
+           </a>
+           <p><a href="#" class="text-decoration-none" style="font-size: 20px; font-weight: 600; margin-right: 20px;">...</a></p>
+       </div>
+       <div class="p-3 text-justify">
+           <p class="post-words">
+               {% if single_post.words|length > 40 %}
+                   {{single_post.words|truncatechars:40}}
+                   <span class="text-dark showfull" 
+                   onclick="document.querySelector('.post-words').innerHTML=`{{single_post.words}}`" style="cursor: pointer;">
+                   See more</span>
+               {% else %}
+                   {{single_post.words|truncatechars:40}}
+               {% endif %}
+           </p>
+       </div>
+       {% if single_post.post_image %}
+       <div class="d-flex justify-content-center">
+           <img src="{{single_post.post_image.url}}" alt="Picture here" style="width: 100%;">
+       </div>
+       {% endif %}
+       <div class="p-3">
+        <div class="d-flex">
+            {% if single_post.no_of_likes and single_post in all_likers %}
+            <p class="like_count{{single_post.post_id}}" style="color: green;">You<span>{% if single_post.no_of_likes|add:'-1' > 0 %} 
+                and {{single_post.no_of_likes|add:'-1'}} other{{single_post.no_of_likes|add:'-1'|pluralize}}{% endif %}</p>
+            {% else %}
+            <span class="like_count{{single_post.post_id}}" style="color:green">{% if single_post.no_of_likes > 0 %}{{single_post.no_of_likes}} 
+                like{{post.no_of_likes|pluralize}} {% endif %}</span>
+            {% endif %}
+            </div>
+            <div class="cmt-like d-flex justify-content-between">
+            <div class="wrp-like" style="position: relative;">
+                {% if single_post.no_of_likes and single_post in all_likers %}
+                <a href="#"
+                class="text-decoration-none likebutton i-like{{single_post.post_id}}"
+                id="{{single_post.post_id}}" style="color: blue;">Like</a>
+                {% else %}
+                <a href="#"
+                 class="text-decoration-none likebutton i-like{{single_post.post_id}}"
+                 id="{{single_post.post_id}}" style="color: black;">Like</a>
+                 {% endif %}
+            </div>
+
+             <a href="/post_comment/{{single_post.post_id}}/"
+             class="text-decoration-none" style="color: black;">Comment</a>
+            </div>
+        </div>
+       </div>
+       <hr>
+       <div class="comment-cont" style="margin-bottom: 80px;">
+        {% for cmt in comments %}
+        {% if cmt.replies %}
+        <div class="wrap-reply">
+            <div class="img-cont-reply">
+                <img src="{{cmt.commenter.profile_img.url}}" alt="" class="image">
+            </div>
+            <div class="txt-wrap-reply">
+                <div class="name-cont-reply">
+                    <b><p>{{cmt.commenter.fullname}}</p></b>
+                    <p>{{cmt.comments}}</p>
+                </div>
+                <div class="some-reply">
+                    <span>13 mins</span>
+                    <a href="#">like</a>
+                    <a href="/replies/{{cmt.id}}/">reply</a>
+                </div>
+            </div>
+        </div>
+            <div class="short-wrapper">
+                {% for rep in cmt.replies %}
+                <div class="short">
+                    <div class="hor-line"></div>
+                    {% if forloop.counter == cmt.rep_count %}
+                    <div class="line line_{{rep.id}}" style="display: none;"></div>
+                    {% else %}
+                    <div class="line"></div>
+                    {% endif %}
+                    <div class="img-top">
+                        <img src="{{rep.commenter.profile_img.url}}" alt="" class="image">
+                    </div>
+                    <div class="reply-txt">
+                        <p>{{rep.comments|truncatechars:28}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        <hr>
+        {% elif not cmt.reply %}
+        <div class="wrapper-cmt">
+            <div class="img-cont">
+                <img src="{{cmt.commenter.profile_img.url}}" alt="" class="image">
+            </div>
+            <div class="txt-wrap">
+                <div class="name-cont">
+                    <b><p>{{cmt.commenter.fullname}}</p></b>
+                    <p>{{cmt.comments}}</p>
+                </div>
+                <div class="some">
+                    <span>13 mins</span>
+                    <a href="#">like</a>
+                    <a href="/replies/{{cmt.id}}/">reply</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+        {% endfor %}
+       </div>
+       <div class="comment-box p-2 fixed-bottom bg-light">
+           <form action="/post_comment/{{single_post.post_id}}/" method="post">
+               <div class="grp w-100 p-2">
+                {% csrf_token %}
+                   <textarea name="comment"  rows="1" class="w-100 mr-2 p-2 bg-transparent" placeholder="Write a comment" 
+                   style="resize: none; overflow: hidden;"></textarea>
+                   <input type="hidden" name="post_id" value="{{single_post.post_id}}">
+                   <input type="hidden", name="userprofile", value="{{request.user.username}}">
+                   <button type="submit" class="btn btn-success p-2 mb-2">send</button>
+               </div>
+           </form>
+       </div>
+   </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block script %} 
+{{block.super}}
+<script>
+    $(document).ready(
+        function(){
+            console.log("Loaded")
+            bd = $("body")
+            wrapper = $('.wrapper')
+            wrapper.scrollTop(wrapper.prop("scrollHeight"))
+            //console.log(bd.prop("scrollHeight"))
+            window.scrollTo(0, bd.prop("scrollHeight"))
+
+            $('.likebutton').click(
+                function(ev)
+                 {
+                    ev.preventDefault();
+                    const n = $(this);
+                    //console.log(n)
+                    const data_id = $(this).attr("id")
+                    console.log(data_id)
+
+                    $.ajax(
+                        {
+                            type: "GET",
+                            url: "/likepost/",
+                            data: {post: data_id},
+                            success: function(data) 
+                                {
+                                                
+                                 const user_in = data.I_liked
+                                 const likes = data.count
+                                 if (user_in === true && likes > 2) 
+                                 {
+                                    $(`.like_count${data_id}`).html(`You, and ${likes - 1} others`)
+                                    $(`.i-like${data_id}`).css("color", "blue")
+                                 }
+                                 else if (user_in == false && likes == 1)
+                                 {
+                                    $(`.like_count${data_id}`).html(`${likes} like`)
+                                    $(`.i-like${data_id}`).css("color", "black")
+                                }
+                                 else if (user_in == false && likes >= 2)
+                                 {
+                                    $(`.like_count${data_id}`).html(`${likes} likes`)
+                                    $(`.i-like${data_id}`).css("color", "black")
+                                 }
+                                 else if (user_in == false && likes < 1)
+                                 {
+                                    $(`.like_count${data_id}`).html(``)
+                                    $(`.i-like${data_id}`).css("color", "black")
+                                }
+                                 else if (user_in == true && likes == 1)
+                                 {
+                                    $(`.like_count${data_id}`).html(`You`)
+                                    $(`.i-like${data_id}`).css("color", "blue")
+                                }
+                                 else if (user_in == true && likes == 2)
+                                 {
+                                    $(`.like_count${data_id}`).html(`You, and ${likes - 1} other`)
+                                    $(`.i-like${data_id}`).css("color", "blue")
+                                    }
+                                    console.log(data)
+                                },
+                            error: function(data) 
+                                {
+                                 console.log("something went wrong")
+                                }
+                        
+                        }
+                                );
+        }
+    )
+        }
+    )
+</script>
+{% endblock %}

@@ -1,0 +1,291 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/search.css' %}"> 
+ {% endblock %}
+{% block title %} <title>inbox-{{userprofile.fullname}}</title> {% endblock %}
+
+{% block collapse %}
+    <nav class="navbar bg-primary sticky-top p-1">
+        <!-- {% block brand %} <p class="h5 text-white">Inbox--{{userprofile.fullname}}</p> {% endblock %} -->
+        <div class="pf" style="width: 40px; height: 40px; border-radius: 50%;">
+            <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
+        </div>
+    <ul class="navbar-nav list-style-none">
+        <li class="nav-item">
+            <a href="{% url 'home' %}"  class="btn btn-primary nav-link h6 text-white">Go back</a>
+        </li>
+    </ul>
+    </nav>
+
+{% endblock %}
+
+{% block main %}
+    <div class="msg-cont">
+        <div id="msg_div">
+        <div class="container w-sm-100  d-flex justify-content-center flex-column align-items-center">
+            <div class="pf" style="width: 60px; height: 60px; border-radius: 50%;">
+                <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
+            </div>
+           <div class="d-flex flex-column ml-3 p-0 justify-content-center align-items-center" style="font-size: 14px; font-weight: 500;">
+            <p class="text-dark p-0 m-0">{{userprofile.fullname}}</p>
+            <p class="text-dark p-0 m-0">{{userprofile.favorite_quote}}</p>
+            <p class="text-dark p-0 m-0">This is the beginning of you chat with <small class="text-success">{{userprofile.fullname}}</small></p>
+           </div>
+        </div>
+        </div>
+        <div class="send-cont">
+                    <button for="lb" class="lb" onclick="document.getElementById('lb').click()">Chose file</button>
+                    <input type="file" class="d-none" id="lb" name="pic-message">
+                    <input type="text" placeholder="Type message"  name="msg" id="msg" onkeypress="showSend();">
+                    <input type="hidden" name="profile" value="{{userprofile.user.username}}">
+        
+                    <button type="submit" id="sub" style="display: none;">Send</button>
+                    {{userprofile.user.username | json_script:'room-name'}}
+                    {{user.username | json_script:'auth-user'}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block script %} 
+{{block.super}}
+<script>
+    document.querySelector('#msg').focus()
+    function showSend()
+   {
+        const btn = document.querySelector('#sub')
+        btn.style.display = "block"
+        document.querySelector(".lb").style.display = "None"
+    }
+    function mapWeekNumber(week_num){
+        switch (week_num){
+            case 0:
+                week_num = "Sun"
+                break;
+            case 1:
+                week_num = "Mon"
+                break;
+            case 2:
+                week_num = "Tue"
+                break;
+            case 3:
+                week_num = "Wed"
+                break;
+            case 4:
+                week_num = "Thur"
+                break;
+            case 5:
+                week_num = "Fri"
+                break;
+            case 6:
+                week_num = "Sat"
+                break;
+        }
+        return week_num
+    }
+    function monthMap(month_num){
+        switch (month_num){
+            case 0:
+                month_num= "Jan"
+                break;
+            case 1:
+                month_num = "Feb"
+                break;
+            case 2:
+                month_num = "Mar"
+                break;
+            case 3:
+                month_num = "April"
+                break;
+            case 4:
+                month_num = "May"
+                break;
+            case 5:
+                month_num = "Jun"
+                break;
+            case 6:
+                month_num = "Jul"
+                break;
+            case 7:
+                month_num = "Aug"
+                break;
+            case 8:
+                month_num = "Sep"
+                break;
+            case 9:
+                month_num = "Oct"
+                break;
+            case 10:
+                month_num = "Nov"
+                break;
+            case 11:
+                month_num = "Dec"
+                break;
+        }
+        return month_num
+    }
+    function formatDate(passdate){
+        let format;
+        const today = new Date()
+        const todaySeconds = today.getTime()
+        const passDate = new Date(passdate)
+        const passDateSeconds = passDate.getTime()
+        const diff = todaySeconds-passDateSeconds
+        const secondsInDay = 24 * 60 * 60 * 1000
+        const secondsInWeek = 7 * secondsInDay
+        if (diff < secondsInDay){
+            if (today.getDay() == passDate.getDay())
+            {
+                format = (passDate.getHours()<10? "0"+passDate.getHours():passDate.getHours()) + ":" + 
+                (passDate.getMinutes()<10? "0"+passDate.getMinutes():passDate.getMinutes())
+            }
+
+            else {
+                format = mapWeekNumber(passDate.getDay()) + ", " +
+                (passDate.getHours()<10? "0"+passDate.getHours():passDate.getHours()) + ":" + 
+                (passDate.getMinutes()<10? "0"+passDate.getMinutes():passDate.getMinutes())
+            }
+        }
+     else if (diff >= secondsInDay & diff < secondsInWeek){
+            format = mapWeekNumber(passDate.getDay()) + " " +
+                (passDate.getHours()<10? "0"+passDate.getHours():passDate.getHours()) + ":" + 
+                (passDate.getMinutes()<10? "0"+passDate.getMinutes():passDate.getMinutes())
+     }
+
+     else {
+        format = monthMap(passDate.getMonth())+ passDate.getDate() + " " +  " " +
+        (passDate.getHours()<10? "0"+passDate.getHours():passDate.getHours()) + ":" + 
+                (passDate.getMinutes()<10? "0"+passDate.getMinutes():passDate.getMinutes())
+
+     }
+     return format
+    }
+</script>
+
+<script>
+     $(document).ready(
+        function(){
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            const auth_user = JSON.parse(document.getElementById('auth-user').textContent);
+            const query = roomName + "_" + auth_user;
+
+const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/'
+    + query
+    + '/'
+);
+
+chatSocket.onmessage = function(e){
+    const json_data = JSON.parse(e.data);
+    var msg_div = $('#msg_div')
+    switch (json_data.type){
+        case "welcome_message":
+            console.log("I got the message daphne")
+            break;
+        case "chat_message":
+            var mesg = json_data.message
+            var sender = mesg.sender.username
+            var receiver = mesg.receiver.username
+            var created = mesg.created
+            var text = mesg.text_message
+            console.log(mesg)
+            console.log(sender, receiver, created, text)
+            var friend = `{{userprofile.user.username}}`
+            if (sender === friend)
+                {
+                    const p = `<div class="d-flex justify-content-center my-2 text-dark"><small style="font-size:12px;">${formatDate(created)}</small></div>
+                     <div class="profile-cont p-3 mb-3 d-flex">
+                    <a href="{% url 'profile' userprofile.user.username %}" class="text-decoration-none text-white">
+                        <div class="chat-buddy" style="width: 60px; height: 60px; border-radius: 50%;">
+                            <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
+                                </div></a>
+                        <div class="buddy-msg bg-primary ml-2 text-justify p-2" style="padding: 5px 7px;">
+                         <p class="text-white" style="font-size: 12px;">${text}</p>
+                            </div>
+                                </div> 
+                                    `
+                                    $('#msg_div').append(p)
+                                    msg_div.scrollTop(msg_div.prop("scrollHeight"))
+                                    }
+            else{
+                    const p = `<div class="d-flex justify-content-center my-2 text-dark align-items-center"><small style="font-size:12px;">${formatDate(created)}</small></div>
+                            <div class="login-cont bg-success mb-3 p-2"><p class="text-white" style="font-size: 12px; color:black">${text}</p></div>
+                                    `
+                            $('#msg_div').append(p)
+                    msg_div.scrollTop(msg_div.prop("scrollHeight"))
+                    break;
+                }
+        case "previous_message":
+            var mesg = json_data.message.reverse()
+            console.log(mesg)
+            //console.log(sender, receiver, created, text)
+            var friend = `{{userprofile.user.username}}`
+            //console.log(json_data.message);
+            $.each(json_data.message, function(index, value)
+            {
+                console.log(value.sender.username, friend)
+                if (value.sender.username === friend)
+                {
+                    const p = `<div class="d-flex justify-content-center my-2 text-dark"><small style="font-size:12px;">${formatDate(value.created)}</small></div>
+                     <div class="profile-cont p-3 mb-3 d-flex">
+                    <a href="{% url 'profile' userprofile.user.username %}" class="text-decoration-none text-white">
+                        <div class="chat-buddy" style="width: 60px; height: 60px; border-radius: 50%;">
+                            <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
+                                </div></a>
+                        <div class="buddy-msg bg-primary ml-2 text-justify p-2" style="padding: 5px 7px;">
+                         <p class="text-white" style="font-size: 12px;">${value.text_message}</p>
+                            </div>
+                                </div> 
+                                    `
+                                    $('#msg_div').append(p)
+                }
+                else{
+                    const p = `<div class="d-flex justify-content-center my-2 text-dark align-items-center"><small style="font-size:12px;">${formatDate(value.created)}</small></div>
+                            <div class="login-cont bg-success mb-3 p-2"><p class="text-white" style="font-size: 12px; color:black">${value.text_message}</p></div>
+                                    `
+                            $('#msg_div').append(p)
+                }
+            })
+            //msg_div.scrollTop(msg_div.prop("scrollHeight"))
+            break;
+        default:
+            console.log("not what I wanted");
+            break;
+                            }
+        msg_div.scrollTop(msg_div.prop("scrollHeight"))
+}
+
+chatSocket.onclose = function(e){
+    console.log("Unexpected event occurs!")
+}
+
+document.querySelector('#msg').focus();
+document.querySelector('#msg').onkeyup = function(e){
+    if (e.key === "Enter"){
+        document.querySelector('#sub').click()
+        document.querySelector(".lb").style.display = "block"
+        document.querySelector('#sub').style.display = "None"
+        
+    }
+}
+
+document.querySelector('#sub').onclick = function(e){
+    msg_in = document.querySelector('#msg')
+    message = msg_in.value;
+
+    chatSocket.send(
+        JSON.stringify({'type': 'chat_message', 'message': message})
+    )
+    msg_in.value = ""
+}
+        }
+    )
+</script>
+
+{% endblock %}

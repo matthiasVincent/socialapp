@@ -1,0 +1,46 @@
+{% extends './base.html' %}
+{% load static %}
+{% block link %}
+ {{block.super}}
+ <link rel="stylesheet" href="{% static '/style.css' %}"> 
+ {% endblock %}
+{% block title %} <title>{{user.username}}</title> {% endblock %}
+{% block brand %} <p class="h5 text-white">Messages</p> {% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a href="{% url 'home' %}"  class="btn btn-primary nav-link h6 text-white">Go back</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+<div class="container rounded p-3" style="background-color: black;">
+    <p class="h3 text-white my-3 rounded">Pls Hi</p>
+
+    <div class="friend-cont mb-1">
+        {% for profile in profiles %}
+        <a href="{% url 'inbox' profile.user.username %}" class="text-decoration-none">
+        <div class="single-friend p-3 d-flex" style="width: 80%;">
+            <div class="picture-cont">
+                <img src="{{profile.profile_img.url}}" alt="" id="pb">
+            </div>
+            <div class="friend-det" style="margin-left: 10%;">
+                <p class="h5 text-white">{{profile.fullname|truncatechars:10}}</p>
+                <p class="last-msg h6 text-white">Hello world</p>
+            </div>
+        </div>
+        </a>
+        <hr/>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="container d-flex justify-content-center mt-4 p-4 fixed-bottom">
+    <p class="text-dark">&copy; Matthias&comma;&nbsp;2023</p>
+</div>
+{% endblock %}
+
+{% block script %} 
+
+{% endblock %}
