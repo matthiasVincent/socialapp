@@ -10,13 +10,13 @@
 <nav class="hdr">
     <ul>
         <li>
-            <a href="/post_comment/{{comment.post_id.post_id}}/">back</a>
+            <a href="/post_comment/{{comment.post_id.post_id}}/"  class="h6 text-dark"><i class="fa fa-arrow-left"></i></a>
         </li>
         <li>
             <a href="{% url 'home' %}">replies</a>
         </li>
         <li>
-            <a href="{% url 'home' %}">search</a>
+            <a href="{% url 'home' %}"  class="h6 text-dark"><i class="fa fa-search"></i></a>
         </li>
     </ul>
 </nav>
@@ -55,8 +55,13 @@
                 <div class="img-top">
                     <img src="{{rep.commenter.profile_img.url}}" alt="" class="image">
                 </div>
-                <div class="reply-txt">
+                <div class="reply-txt p-2 mb-2" style="background-color: azure; border-radius: 15px;">
                     <p>{{rep.comments}}</p>
+                <div class="some-reply p-0 pb-3" style="margin-top: 5px">
+                    <span>13 mins</span>
+                    <a href="#">like</a>
+                    <a href="">reply</a>
+                </div>
                 </div>
             </div>
             {% endfor %}
@@ -67,7 +72,7 @@
             <img src="{{comment.commenter.profile_img.url}}" alt="" class="image">
         </div>
         <div class="txt-wrap">
-            <div class="name-cont">
+            <div class="name-cont" style="background-color: azure; border-radius: 15px;">
                 <b><p>{{comment.commenter.fullname}}</p></b>
                 <p>{{comment.comments}}</p>
             </div>
@@ -80,15 +85,15 @@
     </div>
     {% endif %}
     <!-- </div> -->
-    <div class="comment p-2 bg-light">
+    <div class="comment-post fixed-bottom bg-light">
         <form action="/replies/{{comment.id}}/" method="post">
-            <div class="grp w-100 p-2">
+            <div class="in-wrap w-100 px-2">
              {% csrf_token %}
-                <textarea name="reply"  rows="1" class="w-100 mr-2 p-2 bg-transparent" placeholder="Write a reply" 
+                <textarea name="reply"  rows="1" class="w-100 mr-2 bg-dark p-2" placeholder="Write a comment" 
                 style="resize: none; overflow: hidden;"></textarea>
-                <!-- <input type="hidden" name="comment_id" value="{{comment.id}}"> -->
+                <input type="hidden" name="comment_id" value="{{comment.id}}">
                 <input type="hidden", name="userprofile", value="{{request.user.username}}">
-                <button type="submit" class="btn btn-success p-2 mb-2">send</button>
+                <button type="submit" class="p-2"><i class="fa fa-paper-plane text-primary" style="font-size: 25px;"></i></button>
             </div>
         </form>
     </div>

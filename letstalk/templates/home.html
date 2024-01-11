@@ -8,56 +8,72 @@
 {% block brand %} <p class="h5 text-white">Chat App</p> {% endblock %}
 
 {% block collapse %}
-{{block.super}}
-{% endblock %}
-
-{% block collapse2 %}
-            <ul class="navbar-nav justify-content-between" style="width:100%;">
-                {% block navbar %}
-                <li class="nav-item">
-                    <form action="{% url 'search' %}" class="form-inline px-3">
-                        <input type="text" class="form-control sr" placeholder="Type to search" name="search">
-                        <input type="submit" class="btn btn-success  p-2 text-white m-sm-2 sr" value="Search">
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'buddy' %}" class="nav-link text-white">Messenger </a>
-                </li>
-                <li class="nav-item dropdown dropleft pr-2 mt-sm-2 d-flex">
-                    <!-- <a href="#"  class="btn btn-primary nav-link h6 text-white">Login</a> -->
-                    <a href="#" role="button" data-toggle="dropdown">
-                        <div class="img-cont">
-                            <img src="{{userprofile.profile_img.url}}" alt="hi" id="p"/>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu mt-3 dp">
-                        <li class="dropdown-item">
-                            <a href="{% url 'setting' %}" class="text-decoration-none">Account Settings</a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="{% url 'dologout' %}" class="text-decoration-none">Logout</a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="/profile/{{user.username}}/" class="text-decoration-none">Profile Page</a>
-                        </li>
-                    </ul>
-                </li>
-                {% endblock %}
-            </ul>
+<nav>
+    <div class="up-wrapper">
+        <div class="app-name p-2"><h4 class="text-white">LetsTalk</h4></div>
+        <a href="#" class="btn">
+            <i class="fa fa-search text-light" style="font-size: 20px;"></i>
+        </a>
+        <!-- <div class="form-container">
+            <form action="#">
+                <input type="text" class="form-control sr" placeholder="Type to search" name="search">
+                <button type="submit" class="btn btn-success ml-3"><i class="fa fa-search"></i></button>
+                <input type="submit" class="btn btn-success  p-2 text-white m-sm-2 sr" value="Search">
+            </form>
+        </div> -->
+    </div>
+    <div class="down-wrapper">
+        <ul class="nav-icons">
+            <li class="ref">
+                <a href="#" class="text-light">
+                    <i class="fa fa-home" style="font-size: 20px;"></i>
+                </a>
+            </li>
+            <li class="friend-request">
+                <a href="#" class="text-light">
+                    <i class="fa fa-user-friends" style="font-size: 20px;"></i>
+                </a>
+            </li>
+            <li class="chat-message">
+                <a href="{% url 'buddy' %}"  class="text-light">
+                    <i class="fa-brands fa-facebook-messenger" style="font-size: 20px;"></i>
+                </a>
+            </li>
+            <li class="drop-profile p-3" style="position: relative;">
+                <a href="#" role="button" data-toggle="dropdown">
+                    <div class="img-cont" style="width: 30px; height: 30px; border-radius: 50%;">
+                        <img src="{{userprofile.profile_img.url}}" alt="hi" style="width: 100%; height: 100%; border-radius: 50%;"/>
+                    </div>
+                </a>
+                <ul class="drop-items mt-3">
+                    <li>
+                        <a href="{% url 'setting' %}" class="text-decoration-none text-dark"><i class="fa fa-wrench"></i>&nbsp; Account Settings</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dologout' %}" class="text-decoration-none text-dark"><i class="fa fa-power-off"></i>&nbsp; Logout</a>
+                    </li>
+                    <li>
+                        <a href="/profile/{{user.username}}/" class="text-decoration-none text-dark"><i class="fa fa-user"></i>&nbsp; Profile Page</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
 {% endblock %}
 
 {% block main %}
-<div class="container-fluid">
+<div class="home-wrapper p-2">
     {% include 'comment.html' %}
     <div class="row">
-        <div class="col-sm-7 col-md-5 p-0">
+        <div class="col-sm-7 col-md-5 p-3">
             <div class="container rounded  p-0 m-0">
                 {% include 'post_feed.html' %}
                 <hr/>
             </div> 
         </div>
-        <div class="col-sm-5 col-md-5  p-3">
-            <div class="container m-0 mt-4 f p-3 bg-light">
+        <div class="col-sm-5 col-md-7  p-3">
+            <div class="container m-0  f p-3 bg-light">
                 <p class="h6">Users you can follow</p>
                 {% for user_to_follow in users_you_can_follow %}
                 <div class="user">
@@ -109,32 +125,51 @@
                                  if (user_in === true && likes > 2) 
                                  {
                                     $(`.like_count${data_id}`).html(`You, and ${likes - 1} others`)
-                                    $(`.i-like${data_id}`).css("color", "blue")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-dark')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-primary')
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    // $(`.i-like${data_id}`).css("color", "blue")
                                  }
                                  else if (user_in == false && likes == 1)
                                  {
                                     $(`.like_count${data_id}`).html(`${likes} like`)
-                                    $(`.i-like${data_id}`).css("color", "black")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-primary')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-dark')
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    //$(`.i-like${data_id}`).css("color", "black")
                                 }
                                  else if (user_in == false && likes >= 2)
                                  {
                                     $(`.like_count${data_id}`).html(`${likes} likes`)
-                                    $(`.i-like${data_id}`).css("color", "black")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-primary')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-dark')
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    //$(`.i-like${data_id}`).css("color", "black")
                                  }
                                  else if (user_in == false && likes < 1)
                                  {
                                     $(`.like_count${data_id}`).html(``)
-                                    $(`.i-like${data_id}`).css("color", "black")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-primary')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-dark')
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    //$(`.i-like${data_id}`).css("color", "black")
                                 }
                                  else if (user_in == true && likes == 1)
                                  {
                                     $(`.like_count${data_id}`).html(`You Liked this`)
-                                    $(`.i-like${data_id}`).css("color", "blue")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-dark')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-primary')
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    //$(`.i-like${data_id}`).css("color", "blue")
                                 }
                                  else if (user_in == true && likes == 2)
                                  {
                                     $(`.like_count${data_id}`).html(`You, and ${likes - 1} other`)
-                                    $(`.i-like${data_id}`).css("color", "blue")
+                                    $(`.i-like${data_id}`).children('i').removeClass('text-dark')
+                                    $(`.i-like${data_id}`).children('i').addClass('text-primary')
+                                    
+                                    $(`.i-like${data_id}`).children('span').html(`${likes}`)
+                                    //$(`.i-like${data_id}`).css("color", "blue")
                                     }
                                     console.log(data)
                                 },

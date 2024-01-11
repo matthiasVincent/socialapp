@@ -9,29 +9,14 @@ html{
 }
 
 body{
-    /* background-color: #EBEDF0; */
     background-color: transparent;
     height: 100vh;
     position: relative;
     font-family: Helvetica, sans-serif, Arial;
     padding-bottom: 50px;
+    overflow-x: hidden;
 
 }
-.navbar-brand{
-    width:60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: blueviolet;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/* img{
-    height: 100%;
-    width: 100;;
-    border-radius: 50%;
-} */
-
 /* style for login page  and signup page*/
 
 #ct{
@@ -52,6 +37,84 @@ label{
 }
 
 /* style for home page */
+nav{
+    background-color: #000;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+nav .up-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    width: 60%;
+}
+
+nav .up-wrapper .form-container{
+    width: 70%;
+}
+
+nav .up-wrapper .form-container form{
+    display: flex;
+}
+
+nav .down-wrapper{
+    width: 40%;
+}
+
+nav .down-wrapper > ul{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0;
+}
+nav .down-wrapper > ul li{
+    padding: 5px;
+}
+
+.drop-profile .drop-items{
+    position: absolute;
+    list-style: none;
+    left: -150px;
+    width: 300%;
+    z-index: 2;
+    background-color: aliceblue;
+    display: none;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.drop-profile:hover .drop-items{
+    display: flex;
+}
+
+.home-wrapper{
+    margin-top: 60px;
+}
+@media screen  and (max-width:570px){
+    nav{
+        flex-direction: column;
+        padding: 2px;
+    }
+    nav .up-wrapper{
+        width: 100%;
+    }
+    nav .down-wrapper{
+        width: 100%;
+    }
+    nav .down-wrapper > ul{
+        justify-content: space-between;
+    }
+    .home-wrapper{
+        margin-top: 120px;
+    }
+}
 
 .img-cont, .picture-cont{
     width: 50px;
@@ -110,23 +173,29 @@ label{
 /* style for settings page */
 .sect-cont{
     box-shadow: 2px 3px 2px  #000;
+    padding: 10px;
 }
-.cont-img{
-    width:50%;
-    height:50%;
-    background: radial-gradient(teal, brown, orange, magenta);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+.bio-wrapper{
+    margin: 0 auto;
+    width: 50%;
 }
 .img-con{
     width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px;
+    /* padding: 20px;
+    align-items: center; */
+}
+
+.img-con .cont-img{
+    width:100%;
+    height:50%;
+    background: radial-gradient(teal, brown, orange, magenta);
+    display: flex;
     align-items: center;
+    justify-content: center;
+    border-radius: 5px;
 }
 .img-con form{
     width: 70%;
@@ -164,6 +233,16 @@ label{
     display: flex;
     justify-content: flex-end;
 } 
+
+@media screen  and (max-width:570px){
+    .img-con{
+        width: 100%;
+    }
+    .bio-wrapper{
+        width: 100%;
+    }
+
+}
 
 /* profile page still */
 
@@ -213,6 +292,32 @@ label{
     margin-right: 15px;
     color: whitesmoke;
     font-weight: 500;
+}
+.contain{
+    width:60%;
+    border-bottom: 2px solid gray;
+}
+@media screen  and (max-width:570px){
+    .contain{
+        width: 100%;
+    }
+}
+@media screen  and (min-width:570px) and (max-width:900px){
+    .contain{
+        width: 70%;
+    }
+}
+
+/* create post style */
+.post-wrapper{
+    margin: 0 auto;
+    width: 60%;
+}
+@media screen  and (max-width:570px){
+    .post-wrapper{
+        width: 100%;
+    }
+
 }
 /* General style */
 .pst-cont{

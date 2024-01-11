@@ -26,7 +26,7 @@ body{
     margin: 5px auto;
     /* padding: 5px; */
     background-color: azure;
-    width: 60%;
+    width: 40%;
     height: 100vh;
     position: relative;
 }
@@ -34,22 +34,20 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    position: absolute;
+    width: 40%;
+    position: fixed;
     bottom:0;
-    left:0;
     padding: 7px 5px;
     background-color:beige;
+    margin: 0 auto;
 }
 input, button, label{
     border: none;
-    padding: 7px;
+    padding: 2px;
 }
 .lb{
-    color: blue;
-    border: 1px solid blue;
-    border-radius: 6px;
-    width: 100px;
+    width: 60px;
+    height: 60px;
 }
 
 #msg_div{
@@ -69,8 +67,9 @@ input, button, label{
     margin-left: 8px;
 }
 #sub{
-    background-color: green;
+    background-color: whitesmoke;
     width: 60px;
+    height: 60px;
     color:white;
     border-radius: 6px;
     margin-left: 8px;
@@ -98,34 +97,16 @@ input, button, label{
     overflow-y: auto;
     height: 90%;
  }
-/*.btn-cont{
-    position: fixed;
-    bottom:0;
-    left:0;
-    width: 100%;
-}
-.btn-cont .msg{
-    width:70%;
-    border-radius: 20px;
-    outline-style: none;
-    border: none;
-}*/
+
 .buddy-msg{
     border-radius: 15px;
     word-wrap: break-word;
-    width: 50%;
 }
 
 .login-cont{
     border-radius: 15px;
     word-wrap: break-word;
-    margin-left: 50%;
-    padding: 20px 7px;
-    width: 50%;
-}
-#sub{
-    display:none;
-    text-transform: uppercase;
+    max-width: 60%;
 }
 @media only screen and (max-width:600px) {
     .search-cont{
@@ -137,5 +118,17 @@ input, button, label{
     }
     .msg-cont{
         width: 100%;
+    }
+    .send-cont{
+        width: 100%;
+    }
+}
+
+@media only  screen and (min-width:501px)  and (max-width:800px){
+    .msg-cont{
+        width: 60%;
+    }
+    .send-cont{
+        width: 60%;
     }
 }

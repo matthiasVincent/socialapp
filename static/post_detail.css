@@ -25,10 +25,28 @@ nav ul li>a:hover{
     overflow-y: auto;
 }
 
-.wrapper > .comment-box{
+.wrapper > .comment-post{
     margin: 0 auto;
     width: 40%;
+    border: 1px solid black;
+    border-radius: 15px;
+
 }
+.comment-post form{
+    padding: 2px;
+}
+.comment-post form .in-wrap{
+    display: flex;
+    align-items: center;
+}
+.comment-post form .in-wrap>textarea{
+    border: none;
+    outline: none;
+}
+.comment-post form .in-wrap button{
+    border: none;
+}
+
 
 /* styles for post comments */
 
@@ -184,7 +202,7 @@ nav ul li>a:hover{
     border-radius: 50%;
 }
 .txt-wrap-reply{
-    margin-left: 70px;
+    margin-left: 30px;
     padding: 5px;
     padding-bottom: 15px;
 }
@@ -196,13 +214,13 @@ nav ul li>a:hover{
     margin-bottom: 10px;
     padding: 10px;
 }
-.some-reply a{
+.some-reply a, .some a{
     color: black;
     margin-left: 15px;
 }
 
 
-.some-reply a:hover{
+.some-reply a:hover,.some a:hover {
     text-decoration: none;
 }
 
@@ -238,9 +256,9 @@ nav ul li>a:hover{
 }
 .short .reply-txt{
     width: 60%;
-    margin-left: 10px;
+    margin-left: 30px;
     position: relative;
-    top: -10px;
+    top: -15px;
 }
 .short > .line:first{
     display: none;
@@ -260,7 +278,7 @@ nav ul li>a:hover{
         width: 100%;
     }
 
-    .wrapper > .comment-box{
+    .wrapper > .comment-post{
         width: 100%;
     }
 }
@@ -273,7 +291,7 @@ nav ul li>a:hover{
         width: 60%;
     }
 
-    .wrapper > .comment-box{
+    .wrapper > .comment-post{
         width: 60%;
     }
 }

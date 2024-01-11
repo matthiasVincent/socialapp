@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
-<!--     <link rel="stylesheet" href="{% static '/style.css' %}"> -->
+    <link rel="stylesheet" href="{% static '/css/all.css' %}">
     {% block link %} 
     
     <link rel="stylesheet" href="{% static '/style.css' %}"> 
@@ -26,29 +26,10 @@
 </head>
 <body>
     {% block collapse %}
-    <nav class="navbar navbar-expand-sm  navbar-dark sticky-top p-3"
-    style="background-color: black;width:100%;">
-            {% block brand %}
-        <a href="#" class="navbar-brand">
-            <img src="{% static '/vs.png' %}" alt="logo" class="img">
-        </a>
-            {% endblock %}
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#c">
-            <span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="c">
-            {% block collapse2 %}
-            <ul class="navbar-nav justify-content-end" style="width:100%;">
-                {% block navbar %}
-                <li class="nav-item">
-                    <a href="#" class="nav-link h6">Contact</a>
-                </li>
-                {% endblock %}
-            </ul>
-            {% endblock %}
-        </div>
-    </nav>
     {% endblock %}
+    
     {% block secondnav %} {% endblock %}
+
     {% block main %}
 
     {% endblock %}

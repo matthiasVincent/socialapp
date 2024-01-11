@@ -192,6 +192,17 @@ def profile(request, username):
     for user in users:
         us = Profile.objects.get(user=user)
         profiles.append(us)
+    all_posts = Post.objects.all()
+    likepost = LikePost.objects.filter(userprofile=logged_in.username).all()
+    all_likes = LikePost.objects.all()
+    print(likepost)
+    post_liked = [post.post for post in likepost]
+    print(post_liked)
+    post_you_like = []
+    for post in all_posts:
+        for likes in post.likepost_set.all():
+            if likes.userprofile==request.user.username:
+                post_you_like.append(likes.post)
     if user_profile_follower is not None:
         btn_text = "unfollow"
     else: 
@@ -206,6 +217,7 @@ def profile(request, username):
         'my_follower':my_followers,
         'following':following,
         'friends': profiles,
+        'all_likers': post_you_like,
     }
     return render(request, 'profile.html',context)
 @login_required(login_url='signin')

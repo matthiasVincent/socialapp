@@ -7,17 +7,13 @@
 {% block title %} <title>inbox-{{userprofile.fullname}}</title> {% endblock %}
 
 {% block collapse %}
-    <nav class="navbar bg-primary sticky-top p-1">
-        <!-- {% block brand %} <p class="h5 text-white">Inbox--{{userprofile.fullname}}</p> {% endblock %} -->
-        <div class="pf" style="width: 40px; height: 40px; border-radius: 50%;">
-            <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
-        </div>
-    <ul class="navbar-nav list-style-none">
-        <li class="nav-item">
-            <a href="{% url 'home' %}"  class="btn btn-primary nav-link h6 text-white">Go back</a>
-        </li>
-    </ul>
-    </nav>
+
+<div class="container-fluid bg-dark d-flex justify-content-between align-items-center p-3 sticky-top">
+    <a href="{% url 'home' %}" class="h5 text-decoration-none text-white"><i class="fa fa-arrow-left"></i></a>
+    <div class="pf" style="width: 40px; height: 40px; border-radius: 50%;">
+        <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
+    </div>
+</div>
 
 {% endblock %}
 
@@ -36,12 +32,16 @@
         </div>
         </div>
         <div class="send-cont">
-                    <button for="lb" class="lb" onclick="document.getElementById('lb').click()">Chose file</button>
+                    <button for="lb" class="lb" onclick="document.getElementById('lb').click()">
+                        <i class="fa fa-file-image text-primary" aria-hidden="true" style="font-size: 25px;"></i>
+                    </button>
                     <input type="file" class="d-none" id="lb" name="pic-message">
-                    <input type="text" placeholder="Type message"  name="msg" id="msg" onkeypress="showSend();">
+                    <textarea name="comment"  rows="1" class="w-100 mr-2 p-2" placeholder="Type a message" 
+                    style="resize: none; overflow: hidden;" name="msg" id="msg" onkeypress="showSend();"></textarea>
+                    <!-- <input type="text" placeholder="Type message"  name="msg" id="msg" onkeypress="showSend();"> -->
                     <input type="hidden" name="profile" value="{{userprofile.user.username}}">
         
-                    <button type="submit" id="sub" style="display: none;">Send</button>
+                    <button type="submit" id="sub" style="border-radius: 50%;"><i class="fa fa-paper-plane text-primary" style="font-size: 25px;"></i></button>
                     {{userprofile.user.username | json_script:'room-name'}}
                     {{user.username | json_script:'auth-user'}}
         </div>
@@ -58,7 +58,6 @@
     function showSend()
    {
         const btn = document.querySelector('#sub')
-        btn.style.display = "block"
         document.querySelector(".lb").style.display = "None"
     }
     function mapWeekNumber(week_num){
@@ -202,10 +201,10 @@ chatSocket.onmessage = function(e){
                     const p = `<div class="d-flex justify-content-center my-2 text-dark"><small style="font-size:12px;">${formatDate(created)}</small></div>
                      <div class="profile-cont p-3 mb-3 d-flex">
                     <a href="{% url 'profile' userprofile.user.username %}" class="text-decoration-none text-white">
-                        <div class="chat-buddy" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div class="chat-buddy" style="width: 30px; height: 30px; border-radius: 50%;">
                             <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
                                 </div></a>
-                        <div class="buddy-msg bg-primary ml-2 text-justify p-2" style="padding: 5px 7px;">
+                        <div class="bg-primary ml-2 text-justify p-2" style="border-radius:10px;"">
                          <p class="text-white" style="font-size: 12px;">${text}</p>
                             </div>
                                 </div> 
@@ -215,8 +214,9 @@ chatSocket.onmessage = function(e){
                                     }
             else{
                     const p = `<div class="d-flex justify-content-center my-2 text-dark align-items-center"><small style="font-size:12px;">${formatDate(created)}</small></div>
+                            <div class="chat-wrap" style="display:flex; justify-content:flex-end;">
                             <div class="login-cont bg-success mb-3 p-2"><p class="text-white" style="font-size: 12px; color:black">${text}</p></div>
-                                    `
+                                   </div> `
                             $('#msg_div').append(p)
                     msg_div.scrollTop(msg_div.prop("scrollHeight"))
                     break;
@@ -235,11 +235,11 @@ chatSocket.onmessage = function(e){
                     const p = `<div class="d-flex justify-content-center my-2 text-dark"><small style="font-size:12px;">${formatDate(value.created)}</small></div>
                      <div class="profile-cont p-3 mb-3 d-flex">
                     <a href="{% url 'profile' userprofile.user.username %}" class="text-decoration-none text-white">
-                        <div class="chat-buddy" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div class="chat-buddy" style="width: 30px; height: 30px; border-radius: 50%;">
                             <img src="{{userprofile.profile_img.url}}" alt="" style="width: 100%; height: 100%; border-radius: 50%;" class="bg-dark">
                                 </div></a>
-                        <div class="buddy-msg bg-primary ml-2 text-justify p-2" style="padding: 5px 7px;">
-                         <p class="text-white" style="font-size: 12px;">${value.text_message}</p>
+                        <div class="bg-primary ml-2 text-justify p-2" style="border-radius:10px;">
+                         <p class="text-white p-0" style="font-size: 12px;">${value.text_message}</p>
                             </div>
                                 </div> 
                                     `
@@ -247,8 +247,9 @@ chatSocket.onmessage = function(e){
                 }
                 else{
                     const p = `<div class="d-flex justify-content-center my-2 text-dark align-items-center"><small style="font-size:12px;">${formatDate(value.created)}</small></div>
-                            <div class="login-cont bg-success mb-3 p-2"><p class="text-white" style="font-size: 12px; color:black">${value.text_message}</p></div>
-                                    `
+                            <div class="chat-wrap" style="display:flex; justify-content:flex-end;">
+                            <div class=" login-cont bg-success mb-3 p-2 text-justify"><p class="text-white p-0" style="font-size: 12px; color:black">${value.text_message}</p></div>
+                                    </div>`
                             $('#msg_div').append(p)
                 }
             })
@@ -266,14 +267,46 @@ chatSocket.onclose = function(e){
 }
 
 document.querySelector('#msg').focus();
-document.querySelector('#msg').onkeyup = function(e){
+prev = 70;
+row = 1
+
+function handle(e){
     if (e.key === "Enter"){
-        document.querySelector('#sub').click()
-        document.querySelector(".lb").style.display = "block"
-        document.querySelector('#sub').style.display = "None"
-        
+            row++
+            prev += 20
+            this.setAttribute("rows", `${row}`)
+            document.querySelector("#msg_div").style.paddingBottom = `${prev}px`
+            if (row == 3){
+                this.removeEventListener("keypress", handle, true)
+
+
+}
     }
 }
+
+document.querySelector('#msg').addEventListener("keypress", handle, true)
+// document.querySelector('#msg').onkeypress = function(e){
+//     if (e.key === "Enter"){
+//             row++
+//             prev += 20
+//             this.setAttribute("rows", `${row}`)
+//             document.querySelector("#msg_div").style.paddingBottom = `${prev}px`
+//             console.log(row)
+//             if (row == 4){
+//                 this.removeEventListener()
+                
+//             }
+            //this.setAttribute("rows", `${row}`)
+        // document.querySelector("#msg_div").style.paddingBottom
+        // prev += 20
+             //document.querySelector("#msg_div").style.paddingBottom = `${prev}px`
+        // console.log(prev)
+        // document.querySelector('#sub').click()
+        // document.querySelector(".lb").style.display = "block"
+        // document.querySelector('#sub').style.display = "None"
+        
+    //}
+//}
 
 document.querySelector('#sub').onclick = function(e){
     msg_in = document.querySelector('#msg')
@@ -283,6 +316,10 @@ document.querySelector('#sub').onclick = function(e){
         JSON.stringify({'type': 'chat_message', 'message': message})
     )
     msg_in.value = ""
+    document.querySelector('#msg').setAttribute("rows", "1")
+    document.querySelector("#msg_div").style.paddingBottom = `70px`
+    document.querySelector(".lb").style.display = "block"
+
 }
         }
     )

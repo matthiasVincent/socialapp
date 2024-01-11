@@ -1,0 +1,67 @@
+{% block collapse2 %}
+            <ul class="navbar-nav justify-content-between" style="width:100%;">
+                {% block navbar %}
+                <li class="nav-item">
+                    <form action="{% url 'search' %}" class="form-inline px-3">
+                        <input type="text" class="form-control sr" placeholder="Type to search" name="search">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
+                        <!-- <input type="submit" class="btn btn-success  p-2 text-white m-sm-2 sr" value="Search"> -->
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'buddy' %}" class="nav-link text-white">Messenger </a>
+                </li>
+                <li class="nav-item dropdown dropleft pr-2 mt-sm-2 d-flex">
+                    <a href="#" role="button" data-toggle="dropdown">
+                        <div class="img-cont">
+                            <img src="{{userprofile.profile_img.url}}" alt="hi" id="p"/>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu mt-3 dp">
+                        <li class="dropdown-item">
+                            <a href="{% url 'setting' %}" class="text-decoration-none">Account Settings</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="{% url 'dologout' %}" class="text-decoration-none">Logout</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/profile/{{user.username}}/" class="text-decoration-none">Profile Page</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endblock %}
+            </ul>
+
+            <div class="reply-wrap d-flex flex-column">
+                <div class="reply-txt p-2 mb-2" style="background-color: azure; border-radius: 15px;">
+                    <p>{{rep.comments}}</p>
+                </div>
+                <div class="some-reply">
+                    <span>13 mins</span>
+                    <a href="#">like</a>
+                    <a href="/replies/{{cmt.id}}/">reply</a>
+                </div>
+                </div>
+
+
+             {% comment %} <nav class="navbar navbar-expand-sm  navbar-dark sticky-top p-3"
+    style="background-color: black;width:100%;">
+            {% block brand %}
+        <a href="#" class="navbar-brand">
+            <img src="{% static '/vs.png' %}" alt="logo" class="img">
+        </a>
+            {% endblock %}
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#c">
+            <span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="c">
+            {% block collapse2 %}
+            <ul class="navbar-nav justify-content-end" style="width:100%;">
+                {% block navbar %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link h6">Contact</a>
+                </li>
+                {% endblock %}
+            </ul>
+            {% endblock %}
+        </div>
+    </nav> {% endcomment %}

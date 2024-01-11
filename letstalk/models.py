@@ -72,6 +72,10 @@ class Post(models.Model):
         user_profile = Profile.objects.get(user=user)
         followers = Followers.objects.filter(following=user_profile.user.username).count()
         return followers
+    @property
+    def all_comments(self):
+        comments = PostComment.objects.filter(post_id=self).count()
+        return comments
 
         
 

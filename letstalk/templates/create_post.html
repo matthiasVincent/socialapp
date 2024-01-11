@@ -14,33 +14,61 @@
 {% endblock %}
 
 {% block main %}
-<div class="container-fluid mr-auto p-3 bg-light w-75" id ="ct">
+<div class="post-wrapper  p-3 bg-light">
     <div class="d-flex justify-content-end">
         <button  class="sub1 btn btn-transparent text-primary p-2 mb-2">Post</button>
     </div>
   <form action="{% url 'post' %}" method="post" class="d-flex flex-column form" enctype="multipart/form-data">
     {% csrf_token %}
         <textarea name="words" id="" cols="30" rows="10" class="form-control p-3 bg-transparent" placeholder="What is on your mind?"></textarea>
-        <div class="d-flex justify-content-between align-items-center  p-3">
+        <div class="d-flex flex-column  p-3">
+            <div class="show-selected p-2" id="show" style="display: flex; overflow: auto;">
+            </div>
+            <div class="inp-wrapper d-flex justify-content-between align-items-center mt-2">
             <label for="post_image" class="btn btn-info p-2 mb-0">Chose file</label>
-            <input type="file" class="form-control  mr-2 d-none" name="post_image" style="width: 100px;" id="post_image">
+            <input type="file" class="form-control  mr-2 d-none file_in" name="post_image" style="width: 100px;" id="post_image" multiple>
             <button type="submit" class="sub2 btn btn-primary p-2 mb-0">Post</button>
+            </div>
         </div>
     </form> 
 </div> 
 {% endblock %}
 
 {% block script %} 
+{{block.super}}
 <script>
    $(document).ready(
         function() {
+            console.log("yeah loaded")
             $('.sub1').on('click',function() {
                 console.log('was clicked')
                 $('.sub2').click()
             })
+            const inp = document.querySelector('.file_in');
+                console.log(inp)
+                console.log( $('.sub2'))
+                const cont = $('#show')
+                console.log(cont)
+                const inp_j = $(inp)
+
+                function addImage(){
+                    const inp_file = inp.files
+                    for (const file of inp_file){
+                        let file_name = file.name
+                        const img_url = URL.createObjectURL(file)
+                        const app = `<div class="cont-image  d-flex flex-column 
+                        justify-content-center align-items-center table-light  pt-2" style="width: 250px; height: 250px; border-radius:5px;">
+                    <img src=${img_url} alt="" width="80%" height="90%" class="bg-dark">
+                    <p class="px-3">${file_name.slice(0, 10)}</p>
+                    </div>`
+                    cont.append(app)
+                        console.log(file_name)
+                    }
+                }
+            
+                inp_j.on("change", addImage)
         }
    )
 </script>
-<script src="{% static '/learn.js' %}"></script> 
 
 {% endblock %}
